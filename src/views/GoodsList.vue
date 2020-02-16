@@ -31,14 +31,14 @@
           <!-- search result accessories list -->
           <div class="accessory-list-wrap">
             <div class="accessory-list col-4">
-              <ul>
-                <li>
+              <ul v-lazy-container="{ selector: 'img', loading: '/static/loading-svg/loading-spin.svg' }">
+                <li v-for="value in goodsList" :key="value._id">
                   <div class="pic">
-                    <a href="#"><img v-lazy="'/static/' + '1.jpg'" alt=""></a>
+                    <a href="#"><img :data-src="'/static/' + value.productImage" alt=""></a>
                   </div>
                   <div class="main">
-                    <div class="name">XX</div>
-                    <div class="price">XX</div>
+                    <div class="name" v-text="value.productName + '￥'"></div>
+                    <div class="price" v-text="value.salePrice + '￥'"></div>
                     <div class="btn-area">
                       <a href="javascript:void(0);" class="btn btn--m">加入购物车</a>
                     </div>
@@ -62,12 +62,29 @@
   import NavFooter from '@/components/NavFooter'
   import NavBread from '@/components/NavBread'
 
+  import axios from 'axios'
+
   export default {
     name: "GoodsList",
     components: {
       NavHeader,
       NavFooter,
       NavBread
+    },
+    data () {
+      return {
+        goodsList: []
+      };
+    },
+    mounted () {
+      axios.get('/goods').then(res => {
+        if (res.status === 200) {
+          this.goodsList = res.data.result.list;
+          console.log(this.goodsList[0]);
+        } else {
+          this.goodsList = [];
+        }
+      });
     }
   }
 </script>
