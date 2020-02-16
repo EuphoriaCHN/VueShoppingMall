@@ -3,15 +3,15 @@ import Router from 'vue-router'
 
 Vue.use(Router);
 
-import HelloWorld from '@/components/HelloWorld'
+import GoodList from '@/views/GoodsList'
 
 export default new Router({
   mode: 'history',
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      name: 'GoodList',
+      component: GoodList
     }
   ]
 })
