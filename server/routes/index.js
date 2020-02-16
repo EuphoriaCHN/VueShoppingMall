@@ -1,9 +1,14 @@
+/**
+ * 一级路由：/
+ * @type {createApplication}
+ */
+
 var express = require('express');
 var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express Very Good' });
+  res.render('index');
 });
 
 module.exports = router;

@@ -1,3 +1,8 @@
+/**
+ * 一级路由：/users
+ * @type {createApplication}
+ */
+
 var express = require('express');
 var router = express.Router();
 
