@@ -27,7 +27,43 @@ mongoose.connection.on('disconnected', function () {
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  Goods.find({}, function (err, doc) {
+  let sort = parseInt(req.query['sort']);
+  let page = parseInt(req.query['page']);
+  let pageSize = parseInt(req.query['pageSize']);
+  let priceChecked = req.query['priceChecked'];
+  let skip = (page - 1) * pageSize;
+
+  let params = {};
+
+  let minPrice, maxPrice;
+  if (priceChecked !== 'all') {
+    switch (priceChecked) {
+      case '0':
+        minPrice = 0;
+        maxPrice = 100;
+        break;
+      case '1':
+        minPrice = 100;
+        maxPrice = 500;
+        break;
+      case '2':
+        minPrice = 500;
+        maxPrice = 1000;
+        break;
+      case '3':
+        minPrice = 1000;
+        maxPrice = 5000;
+        break;
+    }
+    params.salePrice = {
+      $gt: minPrice,
+      $lt: maxPrice
+    };
+  }
+
+  let goodsModel = Goods.find(params).skip(skip).limit(pageSize);
+  goodsModel.sort({'salePrice': sort});
+  goodsModel.exec({}, function (err, doc) {
     if (err) {
       res.json({status: "500", message: err.message});
     }
